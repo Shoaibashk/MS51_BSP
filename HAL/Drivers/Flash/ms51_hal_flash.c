@@ -526,13 +526,14 @@ HAL_StatusTypeDef HAL_DataFlash_Init(uint8_t startPage, uint8_t pageCount)
 HAL_StatusTypeDef HAL_DataFlash_Erase(void)
 {
     uint16_t addr;
+    uint16_t endAddr;
     
     if (g_dataFlashSize == 0) {
         return HAL_ERROR;
     }
     
-    for (addr = g_dataFlashBase; addr < (g_dataFlashBase + g_dataFlashSize); 
-         addr += HAL_FLASH_PAGE_SIZE) {
+    endAddr = g_dataFlashBase + g_dataFlashSize;
+    for (addr = g_dataFlashBase; addr < endAddr; addr += HAL_FLASH_PAGE_SIZE) {
         HAL_Flash_ErasePage(HAL_FLASH_AREA_APROM, addr);
     }
     

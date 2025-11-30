@@ -39,11 +39,11 @@ void main(void)
     
     /* Print welcome message */
     printf("\n\r");
-    printf("*************************************\n\r");
-    printf("* MS51 HAL Library Demo             *\n\r");
-    printf("* UART Printf Example               *\n\r");
-    printf("* System Clock: %lu Hz      *\n\r", (unsigned long)SYSCLK_FREQ);
-    printf("*************************************\n\r");
+    printf("*******************************\n\r");
+    printf("* MS51 HAL Library Demo       *\n\r");
+    printf("* UART Printf Example         *\n\r");
+    printf("* System Clock: 24 MHz        *\n\r");
+    printf("*******************************\n\r");
     printf("\n\r");
     
     /* Main loop - print counter periodically */

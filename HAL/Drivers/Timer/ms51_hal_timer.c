@@ -467,10 +467,11 @@ void HAL_Timer_DelayMs(uint32_t sysclk, uint16_t ms)
     uint16_t i;
     uint16_t timerReload;
     
-    /* Calculate timer reload for 1ms at Fsys/12 clock */
-    /* Max value for 16-bit timer = 65535 counts */
-    /* At 24MHz with /12, count = 2000 per ms */
-    timerReload = (uint16_t)(65536 - (sysclk / 12000));  /* For 1ms */
+    /* Calculate timer reload for 1ms at Fsys/12 clock 
+     * Formula: reload = 65536 - (sysclk / 12 / 1000)
+     * At 24MHz: reload = 65536 - (24000000 / 12 / 1000) = 65536 - 2000 = 63536
+     */
+    timerReload = (uint16_t)(65536 - ((sysclk / 12) / 1000));
     
     /* Save timer state */
     TMOD &= 0xF0;

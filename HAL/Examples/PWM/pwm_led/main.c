@@ -77,16 +77,21 @@ void main(void)
         HAL_PWM_SetDuty(PWM_CHANNEL, duty);
         HAL_PWM_LoadValues();
         
-        /* Update brightness direction */
-        duty += (direction * BREATH_STEP);
-        
-        /* Reverse direction at limits */
-        if (duty >= PWM_PERIOD) {
-            duty = PWM_PERIOD;
-            direction = -1;
-        } else if (duty == 0 || (direction < 0 && duty < BREATH_STEP)) {
-            duty = 0;
-            direction = 1;
+        /* Update brightness - handle direction safely for unsigned type */
+        if (direction > 0) {
+            if (duty + BREATH_STEP >= PWM_PERIOD) {
+                duty = PWM_PERIOD;
+                direction = -1;
+            } else {
+                duty += BREATH_STEP;
+            }
+        } else {
+            if (duty <= BREATH_STEP) {
+                duty = 0;
+                direction = 1;
+            } else {
+                duty -= BREATH_STEP;
+            }
         }
         
         /* Delay for smooth breathing effect */

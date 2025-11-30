@@ -134,8 +134,8 @@ HAL_StatusTypeDef HAL_System_SetClockDiv(HAL_ClkDivTypeDef div)
 {
     CKDIV = (uint8_t)div;
     
-    /* Update system clock frequency */
-    g_sysClkFreq >>= div;
+    /* Update system clock frequency: Fsys = Fclk / (1 << div) */
+    g_sysClkFreq = g_sysClkFreq / (1UL << div);
     
     return HAL_OK;
 }
