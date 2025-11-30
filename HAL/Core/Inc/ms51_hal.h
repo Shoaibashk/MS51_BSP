@@ -260,6 +260,16 @@ typedef enum {
     #include "ms51_hal_flash.h"
 #endif
 
+/* BOD HAL Driver */
+#ifdef HAL_BOD_MODULE_ENABLED
+    #include "ms51_hal_bod.h"
+#endif
+
+/* WKT HAL Driver */
+#ifdef HAL_WKT_MODULE_ENABLED
+    #include "ms51_hal_wkt.h"
+#endif
+
 /*******************************************************************************
  * HAL Core Function Prototypes
  ******************************************************************************/

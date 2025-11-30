@@ -74,6 +74,8 @@ extern "C" {
 #define HAL_WDT_MODULE_ENABLED        /**< Enable Watchdog HAL Module */
 #define HAL_SYSTEM_MODULE_ENABLED     /**< Enable System HAL Module */
 #define HAL_FLASH_MODULE_ENABLED      /**< Enable Flash/IAP HAL Module */
+#define HAL_BOD_MODULE_ENABLED        /**< Enable BOD (Brown-out Detector) HAL Module */
+#define HAL_WKT_MODULE_ENABLED        /**< Enable WKT (Wake-up Timer) HAL Module */
 
 /*******************************************************************************
  * Debug Configuration

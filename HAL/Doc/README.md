@@ -44,6 +44,8 @@ The MS51 HAL (Hardware Abstraction Layer) Library provides a unified, high-level
 | WDT | Watchdog Timer | `ms51_hal_wdt.h` |
 | Flash | Flash/IAP Programming | `ms51_hal_flash.h` |
 | System | Clock, Power, Reset | `ms51_hal_system.h` |
+| BOD | Brown-out Detector | `ms51_hal_bod.h` |
+| WKT | Wake-up Timer | `ms51_hal_wkt.h` |
 
 ## Quick Start
 
