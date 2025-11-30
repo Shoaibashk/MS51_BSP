@@ -1,0 +1,20 @@
+; MS51 8KB Device - Keil C51 Linker Configuration
+;
+; Device: MS51DA9AE, MS51BA9AE
+; Flash:  8 KB  (0x0000 - 0x1FFF)
+; SRAM:   256 B (IRAM only)
+; APROM:  0x0000 - 0x15FF (5.5 KB)
+; LDROM:  0x1600 - 0x1FFF (2.5 KB)
+; CONFIG: 0x1800 - 0x1807 (8 bytes)
+
+; Memory Configuration for Keil LX51 Linker
+CLASSES (
+    IDATA (D:0x00-D:0xFF),
+    CODE  (C:0x0000-C:0x15FF)
+)
+
+SEGMENTS (
+    ?C_STARTUP(C:0x0000),
+    ?PR?MAIN(C:),
+    ?DT?MAIN(I:)
+)

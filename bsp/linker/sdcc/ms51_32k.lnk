@@ -1,0 +1,25 @@
+# MS51 32KB Device - SDCC Linker Script
+#
+# Device: MS51FC0AE, MS51XC0BE, MS51EB0AE, MS51EC0AE, MS51TC0AE, MS51PC0AE
+# Flash:  32 KB (0x0000 - 0x7FFF)
+# SRAM:   1 KB  (256 bytes IRAM + 768 bytes XRAM)
+#
+# Copyright (c) 2024-2025 MS51_BSP Contributors
+# SPDX-License-Identifier: Apache-2.0
+
+# Code memory
+--code-loc 0x0000
+--code-size 0x7600    # 30 KB APROM (excluding LDROM)
+
+# Internal RAM (256 bytes)
+--iram-size 256
+
+# External RAM (768 bytes XRAM)
+--xram-loc 0x0000
+--xram-size 768
+
+# Stack configuration
+--stack-size 64
+
+# Data segment
+--data-loc 0x30       # Start after register banks and bit-addressable area

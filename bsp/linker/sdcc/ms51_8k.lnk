@@ -1,0 +1,25 @@
+# MS51 8KB Device - SDCC Linker Script
+#
+# Device: MS51DA9AE, MS51BA9AE
+# Flash:  8 KB  (0x0000 - 0x1FFF)
+# SRAM:   256 B (IRAM only)
+#
+# Copyright (c) 2024-2025 MS51_BSP Contributors
+# SPDX-License-Identifier: Apache-2.0
+
+# Code memory
+--code-loc 0x0000
+--code-size 0x1600    # 5.5 KB APROM (excluding LDROM)
+
+# Internal RAM (256 bytes)
+--iram-size 256
+
+# No external RAM for 8KB devices
+# --xram-loc 0x0000
+# --xram-size 0
+
+# Stack configuration (smaller for 8KB devices)
+--stack-size 48
+
+# Data segment
+--data-loc 0x30       # Start after register banks and bit-addressable area

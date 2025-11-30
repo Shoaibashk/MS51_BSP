@@ -1,0 +1,22 @@
+; MS51 32KB Device - Keil C51 Linker Configuration
+;
+; Device: MS51FC0AE, MS51XC0BE, MS51EB0AE, MS51EC0AE, MS51TC0AE, MS51PC0AE
+; Flash:  32 KB (0x0000 - 0x7FFF)
+; SRAM:   1 KB  (256 bytes IRAM + 768 bytes XRAM)
+; APROM:  0x0000 - 0x75FF (30 KB)
+; LDROM:  0x7600 - 0x7FFF (2.5 KB)
+; CONFIG: 0x7800 - 0x7807 (8 bytes)
+
+; Memory Configuration for Keil LX51 Linker
+CLASSES (
+    IDATA (D:0x00-D:0xFF),
+    XDATA (X:0x0000-X:0x02FF),
+    CODE  (C:0x0000-C:0x75FF)
+)
+
+SEGMENTS (
+    ?C_STARTUP(C:0x0000),
+    ?PR?MAIN(C:),
+    ?DT?MAIN(I:),
+    ?XD?MAIN(X:)
+)

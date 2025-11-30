@@ -1,0 +1,45 @@
+;------------------------------------------------------------------------------
+; MS51 BSP - IAR Embedded Workbench Startup Code
+; 
+; This file provides the startup code for MS51 microcontrollers when using
+; the IAR Embedded Workbench for 8051.
+;
+; Copyright (c) 2024-2025 MS51_BSP Contributors
+; SPDX-License-Identifier: Apache-2.0
+;------------------------------------------------------------------------------
+
+        MODULE  ?cstartup
+
+        RSEG    CSTACK:IDATA:NOROOT
+        RSEG    ISTACK:IDATA:NOROOT
+
+        EXTERN  ?C_STARTUP
+        EXTERN  main
+
+        PUBLIC  __program_start
+
+;------------------------------------------------------------------------------
+; Reset Vector
+;------------------------------------------------------------------------------
+        COMMON  INTVEC:CODE:ROOT(0)
+        ORG     0
+        LJMP    __program_start
+
+;------------------------------------------------------------------------------
+; Startup Code
+;------------------------------------------------------------------------------
+        RSEG    RCODE:CODE:NOROOT(0)
+__program_start:
+        ; Initialize stack pointer
+        MOV     SP, #SFE(CSTACK) - 1
+
+        ; Initialize memory segments
+        LCALL   ?C_STARTUP
+
+        ; Call main
+        LCALL   main
+
+        ; Halt on return from main
+        SJMP    $
+
+        END

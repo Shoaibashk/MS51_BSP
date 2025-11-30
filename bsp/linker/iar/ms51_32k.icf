@@ -1,0 +1,39 @@
+//------------------------------------------------------------------------------
+// MS51 32KB Device - IAR Linker Configuration File
+//
+// Device: MS51FC0AE, MS51XC0BE, MS51EB0AE, MS51EC0AE, MS51TC0AE, MS51PC0AE
+// Flash:  32 KB (0x0000 - 0x7FFF)
+// SRAM:   1 KB  (256 bytes IRAM + 768 bytes XRAM)
+//
+// Copyright (c) 2024-2025 MS51_BSP Contributors
+// SPDX-License-Identifier: Apache-2.0
+//------------------------------------------------------------------------------
+
+define memory MEM with size = 64K;
+
+//------------------------------------------------------------------------------
+// Code Memory
+//------------------------------------------------------------------------------
+define region CODE_region   = MEM:[from 0x0000 to 0x75FF];  // 30 KB APROM
+define region LDROM_region  = MEM:[from 0x7600 to 0x7FFF];  // 2.5 KB LDROM
+
+//------------------------------------------------------------------------------
+// Data Memory
+//------------------------------------------------------------------------------
+define region DATA_region   = MEM:[from 0x00 to 0x7F];      // Lower 128 bytes (direct)
+define region IDATA_region  = MEM:[from 0x00 to 0xFF];      // 256 bytes IDATA
+define region XDATA_region  = MEM:[from 0x0000 to 0x02FF];  // 768 bytes XDATA
+
+//------------------------------------------------------------------------------
+// Stack Configuration
+//------------------------------------------------------------------------------
+define block CSTACK with size = 0x40 { };
+
+//------------------------------------------------------------------------------
+// Placement
+//------------------------------------------------------------------------------
+place at start of CODE_region { readonly section .intvec };
+place in CODE_region { readonly };
+place in DATA_region { readwrite };
+place in IDATA_region { block CSTACK };
+place in XDATA_region { section XDATA };

@@ -1,0 +1,37 @@
+//------------------------------------------------------------------------------
+// MS51 8KB Device - IAR Linker Configuration File
+//
+// Device: MS51DA9AE, MS51BA9AE
+// Flash:  8 KB  (0x0000 - 0x1FFF)
+// SRAM:   256 B (IRAM only)
+//
+// Copyright (c) 2024-2025 MS51_BSP Contributors
+// SPDX-License-Identifier: Apache-2.0
+//------------------------------------------------------------------------------
+
+define memory MEM with size = 64K;
+
+//------------------------------------------------------------------------------
+// Code Memory
+//------------------------------------------------------------------------------
+define region CODE_region   = MEM:[from 0x0000 to 0x15FF];  // 5.5 KB APROM
+define region LDROM_region  = MEM:[from 0x1600 to 0x1FFF];  // 2.5 KB LDROM
+
+//------------------------------------------------------------------------------
+// Data Memory
+//------------------------------------------------------------------------------
+define region DATA_region   = MEM:[from 0x00 to 0x7F];      // Lower 128 bytes (direct)
+define region IDATA_region  = MEM:[from 0x00 to 0xFF];      // 256 bytes IDATA
+
+//------------------------------------------------------------------------------
+// Stack Configuration
+//------------------------------------------------------------------------------
+define block CSTACK with size = 0x30 { };  // Smaller stack for 8KB devices
+
+//------------------------------------------------------------------------------
+// Placement
+//------------------------------------------------------------------------------
+place at start of CODE_region { readonly section .intvec };
+place in CODE_region { readonly };
+place in DATA_region { readwrite };
+place in IDATA_region { block CSTACK };
