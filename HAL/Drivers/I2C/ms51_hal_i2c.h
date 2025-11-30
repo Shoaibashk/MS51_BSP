@@ -287,6 +287,65 @@ void HAL_I2C_DisableInterrupt(void);
 void HAL_I2C_ClearFlag(void);
 
 /*******************************************************************************
+ * I2C Interrupt-Driven Functions
+ ******************************************************************************/
+
+/**
+ * @brief  Master transmit data using interrupt mode
+ * @param  hi2c Pointer to I2C handle structure
+ * @param  slaveAddr Slave address (7-bit)
+ * @param  pData Pointer to data buffer
+ * @param  size Number of bytes to transmit
+ * @retval HAL_StatusTypeDef HAL status
+ * 
+ * @note   Non-blocking function. HAL_I2C_MasterTxCpltCallback is called on completion.
+ */
+HAL_StatusTypeDef HAL_I2C_MasterTransmit_IT(HAL_I2C_HandleTypeDef *hi2c,
+                                             uint8_t slaveAddr,
+                                             uint8_t *pData, uint16_t size);
+
+/**
+ * @brief  Master receive data using interrupt mode
+ * @param  hi2c Pointer to I2C handle structure
+ * @param  slaveAddr Slave address (7-bit)
+ * @param  pData Pointer to data buffer
+ * @param  size Number of bytes to receive
+ * @retval HAL_StatusTypeDef HAL status
+ * 
+ * @note   Non-blocking function. HAL_I2C_MasterRxCpltCallback is called on completion.
+ */
+HAL_StatusTypeDef HAL_I2C_MasterReceive_IT(HAL_I2C_HandleTypeDef *hi2c,
+                                            uint8_t slaveAddr,
+                                            uint8_t *pData, uint16_t size);
+
+/**
+ * @brief  Slave transmit data using interrupt mode
+ * @param  hi2c Pointer to I2C handle structure
+ * @param  pData Pointer to data buffer
+ * @param  size Number of bytes to transmit
+ * @retval HAL_StatusTypeDef HAL status
+ */
+HAL_StatusTypeDef HAL_I2C_SlaveTransmit_IT(HAL_I2C_HandleTypeDef *hi2c,
+                                            uint8_t *pData, uint16_t size);
+
+/**
+ * @brief  Slave receive data using interrupt mode
+ * @param  hi2c Pointer to I2C handle structure
+ * @param  pData Pointer to data buffer
+ * @param  size Number of bytes to receive
+ * @retval HAL_StatusTypeDef HAL status
+ */
+HAL_StatusTypeDef HAL_I2C_SlaveReceive_IT(HAL_I2C_HandleTypeDef *hi2c,
+                                           uint8_t *pData, uint16_t size);
+
+/**
+ * @brief  I2C interrupt handler
+ * @param  hi2c Pointer to I2C handle structure
+ * @note   Call this from I2C ISR
+ */
+void HAL_I2C_IRQHandler(HAL_I2C_HandleTypeDef *hi2c);
+
+/*******************************************************************************
  * I2C Callback Functions
  ******************************************************************************/
 
@@ -299,6 +358,21 @@ void HAL_I2C_MasterTxCpltCallback(HAL_I2C_HandleTypeDef *hi2c);
  * @brief  I2C Master RX complete callback
  */
 void HAL_I2C_MasterRxCpltCallback(HAL_I2C_HandleTypeDef *hi2c);
+
+/**
+ * @brief  I2C Slave TX complete callback
+ */
+void HAL_I2C_SlaveTxCpltCallback(HAL_I2C_HandleTypeDef *hi2c);
+
+/**
+ * @brief  I2C Slave RX complete callback
+ */
+void HAL_I2C_SlaveRxCpltCallback(HAL_I2C_HandleTypeDef *hi2c);
+
+/**
+ * @brief  I2C Address match callback
+ */
+void HAL_I2C_AddrCallback(HAL_I2C_HandleTypeDef *hi2c, uint8_t direction);
 
 /**
  * @brief  I2C Error callback

@@ -270,6 +270,16 @@ typedef enum {
     #include "ms51_hal_wkt.h"
 #endif
 
+/* SPROM HAL Driver */
+#ifdef HAL_SPROM_MODULE_ENABLED
+    #include "ms51_hal_sprom.h"
+#endif
+
+/* EEPROM HAL Driver */
+#ifdef HAL_EEPROM_MODULE_ENABLED
+    #include "ms51_hal_eeprom.h"
+#endif
+
 /*******************************************************************************
  * HAL Core Function Prototypes
  ******************************************************************************/

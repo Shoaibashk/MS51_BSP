@@ -326,6 +326,44 @@ void HAL_ADC_ClearFlag(void);
 uint16_t HAL_ADC_ReadBandgapCalibration(void);
 
 /*******************************************************************************
+ * ADC Interrupt-Driven Functions
+ ******************************************************************************/
+
+/**
+ * @brief  Start ADC conversion with interrupt
+ * @param  hadc Pointer to ADC handle
+ * @param  channel ADC channel to convert
+ * @retval HAL_StatusTypeDef HAL status
+ * 
+ * @note   Non-blocking function. HAL_ADC_ConvCompleteCallback is called on completion.
+ */
+HAL_StatusTypeDef HAL_ADC_Start_IT(HAL_ADC_HandleTypeDef *hadc, 
+                                    HAL_ADC_ChannelTypeDef channel);
+
+/**
+ * @brief  Stop ADC conversion
+ * @param  hadc Pointer to ADC handle
+ * @retval HAL_StatusTypeDef HAL status
+ */
+HAL_StatusTypeDef HAL_ADC_Stop_IT(HAL_ADC_HandleTypeDef *hadc);
+
+/**
+ * @brief  ADC interrupt handler
+ * @param  hadc Pointer to ADC handle
+ * @note   Call this from ADC ISR
+ */
+void HAL_ADC_IRQHandler(HAL_ADC_HandleTypeDef *hadc);
+
+/**
+ * @brief  Start continuous ADC conversion with interrupt
+ * @param  hadc Pointer to ADC handle
+ * @param  channel ADC channel to convert
+ * @retval HAL_StatusTypeDef HAL status
+ */
+HAL_StatusTypeDef HAL_ADC_StartContinuous_IT(HAL_ADC_HandleTypeDef *hadc,
+                                              HAL_ADC_ChannelTypeDef channel);
+
+/*******************************************************************************
  * ADC Callback
  ******************************************************************************/
 
@@ -335,6 +373,13 @@ uint16_t HAL_ADC_ReadBandgapCalibration(void);
  * @note   Called from ADC ISR when conversion is complete
  */
 void HAL_ADC_ConvCompleteCallback(HAL_ADC_HandleTypeDef *hadc);
+
+/**
+ * @brief  ADC compare match callback
+ * @param  hadc Pointer to ADC handle
+ * @note   Called when ADC result matches compare threshold
+ */
+void HAL_ADC_CompareMatchCallback(HAL_ADC_HandleTypeDef *hadc);
 
 /*******************************************************************************
  * ADC Convenience Macros

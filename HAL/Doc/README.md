@@ -46,6 +46,8 @@ The MS51 HAL (Hardware Abstraction Layer) Library provides a unified, high-level
 | System | Clock, Power, Reset | `ms51_hal_system.h` |
 | BOD | Brown-out Detector | `ms51_hal_bod.h` |
 | WKT | Wake-up Timer | `ms51_hal_wkt.h` |
+| SPROM | Security Protected ROM | `ms51_hal_sprom.h` |
+| EEPROM | EEPROM Emulation (Data Flash) | `ms51_hal_eeprom.h` |
 
 ## Quick Start
 
@@ -193,6 +195,93 @@ HAL_StatusTypeDef HAL_PWM_SetDuty(HAL_PWM_ChannelTypeDef channel, uint16_t duty)
 HAL_StatusTypeDef HAL_PWM_SetDutyPercent(HAL_PWM_ChannelTypeDef channel, uint8_t percent);
 ```
 
+### EEPROM API
+
+```c
+/* Initialize EEPROM emulation */
+HAL_StatusTypeDef HAL_EEPROM_Init(void);
+
+/* Read/Write single bytes */
+uint8_t HAL_EEPROM_ReadByte(uint16_t address);
+HAL_StatusTypeDef HAL_EEPROM_WriteByte(uint16_t address, uint8_t data);
+
+/* Read/Write arrays */
+HAL_StatusTypeDef HAL_EEPROM_Read(uint16_t address, uint8_t *pData, uint16_t size);
+HAL_StatusTypeDef HAL_EEPROM_Write(uint16_t address, uint8_t *pData, uint16_t size);
+
+/* Read/Write 16-bit and 32-bit values */
+uint16_t HAL_EEPROM_ReadU16(uint16_t address);
+HAL_StatusTypeDef HAL_EEPROM_WriteU16(uint16_t address, uint16_t data);
+uint32_t HAL_EEPROM_ReadU32(uint16_t address);
+HAL_StatusTypeDef HAL_EEPROM_WriteU32(uint16_t address, uint32_t data);
+
+/* Update with wear leveling optimization */
+HAL_StatusTypeDef HAL_EEPROM_Update(uint16_t address, uint8_t data);
+```
+
+### SPROM API
+
+```c
+/* Read SPROM data */
+uint8_t HAL_SPROM_ReadByte(uint8_t address);
+HAL_StatusTypeDef HAL_SPROM_Read(uint8_t address, uint8_t *pData, uint8_t size);
+
+/* Write SPROM data */
+HAL_StatusTypeDef HAL_SPROM_WriteByte(uint8_t address, uint8_t data);
+HAL_StatusTypeDef HAL_SPROM_Write(uint8_t address, uint8_t *pData, uint8_t size);
+
+/* Verify and lock */
+HAL_StatusTypeDef HAL_SPROM_Verify(uint8_t address, uint8_t *pData, uint8_t size);
+uint8_t HAL_SPROM_IsLocked(void);
+HAL_StatusTypeDef HAL_SPROM_Lock(void);  /* WARNING: Permanent! */
+```
+
+## Polling vs Interrupt-Driven Modes
+
+All major communication peripherals support both polling and interrupt-driven operation:
+
+### Available Modes
+
+| Peripheral | Polling | Interrupt | Notes |
+|------------|---------|-----------|-------|
+| UART | ✅ `HAL_UART_Transmit()` | ✅ Callbacks | TX/RX with callbacks |
+| I2C | ✅ `HAL_I2C_MasterTransmit()` | ✅ `HAL_I2C_MasterTransmit_IT()` | Master/Slave modes |
+| SPI | ✅ `HAL_SPI_Transmit()` | ✅ `HAL_SPI_Transmit_IT()` | Full duplex support |
+| ADC | ✅ `HAL_ADC_Read()` | ✅ `HAL_ADC_Start_IT()` | Single/Continuous |
+| Timer | ✅ `HAL_Timer_DelayMs()` | ✅ `HAL_Timer_EnableInterrupt()` | All timers |
+| GPIO | ✅ `HAL_GPIO_ReadPin()` | ✅ `HAL_GPIO_ConfigInterrupt()` | Pin interrupt |
+| PWM | ✅ `HAL_PWM_SetDuty()` | ✅ `HAL_PWM_EnableInterrupt()` | Period/Duty interrupts |
+| WDT | ✅ `HAL_WDT_Feed()` | ✅ Interrupt mode | Early warning |
+| BOD | ✅ `HAL_BOD_GetFlag()` | ✅ `HAL_BOD_EnableInterrupt()` | Brown-out detect |
+| WKT | ✅ Polling | ✅ Auto-wakeup | Power-down wake |
+
+### Interrupt Mode Example
+
+```c
+/* I2C interrupt mode example */
+void main(void)
+{
+    HAL_I2C_HandleTypeDef hi2c;
+    uint8_t data[4] = {0x01, 0x02, 0x03, 0x04};
+    
+    HAL_Init();
+    HAL_I2C_Init(&hi2c);
+    
+    /* Non-blocking transmit with callback */
+    HAL_I2C_MasterTransmit_IT(&hi2c, 0x50, data, 4);
+    
+    while (1) {
+        /* Do other work while I2C transfer in progress */
+    }
+}
+
+/* Callback when transfer completes */
+void HAL_I2C_MasterTxCpltCallback(HAL_I2C_HandleTypeDef *hi2c)
+{
+    /* Transfer complete - handle here */
+}
+```
+
 ## Examples
 
 See the `Examples/` directory for complete example projects:
@@ -201,10 +290,19 @@ See the `Examples/` directory for complete example projects:
 - `GPIO/gpio_input` - Button input example
 - `UART/uart_printf` - Printf debug output
 - `UART/uart_echo` - Serial echo example
+- `Timer/timer_interrupt` - Timer interrupt example
+- `Timer/timer_delay` - Timer-based delays
 - `ADC/adc_single` - Single ADC conversion
 - `ADC/adc_vdd` - VDD voltage measurement
-- `I2C/i2c_eeprom` - EEPROM read/write
+- `I2C/i2c_eeprom` - External EEPROM read/write
+- `SPI/spi_master` - SPI master mode
+- `SPI/spi_slave` - SPI slave with interrupt
 - `PWM/pwm_led` - LED dimmer with breathing effect
+- `WDT/wdt_reset` - Watchdog reset example
+- `BOD/bod_detect` - Brown-out detection
+- `PowerManagement/powerdown_wakeup` - Power-down with wake-up
+- `EEPROM/eeprom_basic` - Internal data flash as EEPROM
+- `SPROM/sprom_basic` - Security protected ROM operations
 
 ## Migration from BSP
 
@@ -233,7 +331,11 @@ HAL/
 │   ├── PWM/                   # PWM driver
 │   ├── WDT/                   # Watchdog driver
 │   ├── Flash/                 # Flash/IAP driver
-│   └── System/                # System driver
+│   ├── System/                # System driver
+│   ├── BOD/                   # Brown-out Detector driver
+│   ├── WKT/                   # Wake-up Timer driver
+│   ├── SPROM/                 # Security Protected ROM driver
+│   └── EEPROM/                # EEPROM Emulation driver
 ├── Examples/                  # Example projects
 ├── Templates/                 # Project templates
 └── Doc/                       # Documentation

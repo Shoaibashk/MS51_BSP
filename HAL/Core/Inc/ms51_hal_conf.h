@@ -76,6 +76,8 @@ extern "C" {
 #define HAL_FLASH_MODULE_ENABLED      /**< Enable Flash/IAP HAL Module */
 #define HAL_BOD_MODULE_ENABLED        /**< Enable BOD (Brown-out Detector) HAL Module */
 #define HAL_WKT_MODULE_ENABLED        /**< Enable WKT (Wake-up Timer) HAL Module */
+#define HAL_SPROM_MODULE_ENABLED      /**< Enable SPROM (Security Protected ROM) HAL Module */
+#define HAL_EEPROM_MODULE_ENABLED     /**< Enable EEPROM Emulation HAL Module */
 
 /*******************************************************************************
  * Debug Configuration

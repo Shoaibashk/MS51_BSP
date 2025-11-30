@@ -264,6 +264,55 @@ void HAL_SPI_TxRxCpltCallback(HAL_SPI_HandleTypeDef *hspi);
  */
 void HAL_SPI_ErrorCallback(HAL_SPI_HandleTypeDef *hspi);
 
+/*******************************************************************************
+ * SPI Interrupt-Driven Functions
+ ******************************************************************************/
+
+/**
+ * @brief  Transmit data using interrupt mode
+ * @param  hspi Pointer to SPI handle structure
+ * @param  pData Pointer to data buffer
+ * @param  size Number of bytes to transmit
+ * @retval HAL_StatusTypeDef HAL status
+ * 
+ * @note   Non-blocking function. HAL_SPI_TxCpltCallback is called on completion.
+ */
+HAL_StatusTypeDef HAL_SPI_Transmit_IT(HAL_SPI_HandleTypeDef *hspi, uint8_t *pData,
+                                       uint16_t size);
+
+/**
+ * @brief  Receive data using interrupt mode
+ * @param  hspi Pointer to SPI handle structure
+ * @param  pData Pointer to data buffer
+ * @param  size Number of bytes to receive
+ * @retval HAL_StatusTypeDef HAL status
+ * 
+ * @note   Non-blocking function. HAL_SPI_RxCpltCallback is called on completion.
+ */
+HAL_StatusTypeDef HAL_SPI_Receive_IT(HAL_SPI_HandleTypeDef *hspi, uint8_t *pData,
+                                      uint16_t size);
+
+/**
+ * @brief  Transmit and receive data using interrupt mode
+ * @param  hspi Pointer to SPI handle structure
+ * @param  pTxData Pointer to TX data buffer
+ * @param  pRxData Pointer to RX data buffer
+ * @param  size Number of bytes
+ * @retval HAL_StatusTypeDef HAL status
+ * 
+ * @note   Non-blocking function. HAL_SPI_TxRxCpltCallback is called on completion.
+ */
+HAL_StatusTypeDef HAL_SPI_TransmitReceive_IT(HAL_SPI_HandleTypeDef *hspi,
+                                              uint8_t *pTxData, uint8_t *pRxData,
+                                              uint16_t size);
+
+/**
+ * @brief  SPI interrupt handler
+ * @param  hspi Pointer to SPI handle structure
+ * @note   Call this from SPI ISR
+ */
+void HAL_SPI_IRQHandler(HAL_SPI_HandleTypeDef *hspi);
+
 #ifdef __cplusplus
 }
 #endif
